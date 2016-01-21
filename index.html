@@ -14,6 +14,17 @@
 			bottom: 20px;
 			left: 20px;
 		}
+    #dashboard_update-gps {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      padding: 5px;
+    }
+      #dashboard_update-gps img {
+        width: 30px;
+        height: auto;
+        margin: auto;
+      }
 		#fblogin {
 			z-index: 10000;
 			position: absolute;
@@ -37,7 +48,7 @@
 </head>
 <body id="body" onLoad="App.Init()">
 	<!-- SOCIAL LOGIN  SOCIAL LOGIN  SOCIAL LOGIN  SOCIAL LOGIN  SOCIAL LOGIN  -->
-	<div id="socialLoginPopup" class="popupPanel" align="center">
+	<div id="socialLoginPopup" class="popupPanel displayNone" align="center">
 		<h1>Social.Art</h1>
 		<div id="fbLogin">
 			<img src="img/social/loginfb.png">
@@ -79,6 +90,7 @@
 			<text id="zoomLabel" x="15" y="30">100%</text>
 		</svg>
 		<a id="showEditor" class="button displayNone">Disegna</a>
+    <a id="dashboard_update-gps" class="button displayNone"><img src="img/icon/gitart.png"></a>
 		<span id="dashboardTooltip">
 			<div class="close"><img src="img/icon/x.png"></div>
 			<div id="tooltipUserImage"></div>
@@ -96,7 +108,7 @@
 				<div id="tooltipSave"></div>
 			</div>
 		</span>
-		<div id="dashboardCoords">
+		<div id="dashboardCoords" class="displayNone">
 			<div></div>
 			<span></span>
 		</div>
@@ -135,7 +147,7 @@
 		</div>
 		<!-- FINE COLOR PICKER -->
 		<!-- OPTIONS OPTIONS OPTIONS OPTIONS OPTIONS -->
-		<div id="editorOptions" class="popupPanel" align="center">
+		<div id="editorOptions" class="popupPanel displayNone" align="center">
 			<ul>
 				<li id="optionDraft" class="button"></li>
 				<li id="optionRestore" class="button"></li>

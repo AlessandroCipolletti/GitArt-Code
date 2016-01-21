@@ -13,6 +13,8 @@ var App = (function () {
 		_spinner,
 		XX, YY, XX2, YY2, DXX, DYY,
 		MATH = Math,
+    PI = MATH.PI,
+    PI2 = 2 * PI,
 		round = function (n, d) {
 			var m = d ? MATH.pow(10, d) : 1;
 			return MATH.round(n * m) / m;
@@ -24,25 +26,29 @@ var App = (function () {
 			n = n.toString(16);
 			return (n.length === 1 ? "0" + n : n);
 		},
-		orderNumberUp = function (a, b) { return a - b; },
-		orderNumberDown = function (a, b) { return b - a; },
+		orderNumberUp = function (a, b) {
+      return a - b;
+    },
+		orderNumberDown = function (a, b) {
+      return b - a;
+    },
+    orderStringUp = function (a, b) {
+			if (a > b) return +1;
+			if (a < b) return -1;
+			return 0;
+		},
 		orderStringDown = function (a, b) {
 			if (a < b) return +1;
 			if (a > b) return -1;
 			return 0;
 		},
-		orderStringUp = function (a, b) {
-			if (a > b) return +1;
-			if (a < b) return -1;
-			return 0;
-		},
 		preventDefault = function (e) {
 			e.preventDefault();
 		},
-		requestAnimationFrame = WINDOW.requestAnimationFrame || WINDOW.mozRequestAnimationFrame || WINDOW.webkitRequestAnimationFrame || function (callback){setTimeout(callback, 25)},
-		PI = MATH.PI,
-		PI2 = 2 * PI,
-		EmptyFN = function () {},
+		requestAnimationFrame = WINDOW.requestAnimationFrame || WINDOW.mozRequestAnimationFrame || WINDOW.webkitRequestAnimationFrame || function (callback) {
+      setTimeout(callback, 25);
+    },
+		emptyFN = function () {},
 		_mouseWheelEvent,
 
 	Config = (function () {
@@ -54,55 +60,55 @@ var App = (function () {
 				apiVersion: "v2.2"
 			},
 			workers: {
-				blur:		"file blur.js",
-				scarica:	"file scarica.js"
+				blur: "file blur.js",
+				scarica: "file scarica.js"
 			}
 		}
 	})(),
 
 	Info = (function () {
 		var get_len = function (len) {
-			return "ita"; 	// TODO da implementare per filtrare le lingue non supportate, e restituire il formato a 3 caratteri
+			return "ita";  // TODO da implementare per filtrare le lingue non supportate, e restituire il formato a 3 caratteri
 		};
 		return {
-			name 		: "Social.Art",
-			version 	: "0.5",
-			lenguage	: get_len(WINDOW.navigator.language),
-			macOS		: navigator.platform.toUpperCase().indexOf("MAC") !== -1,
-			firefox		: /Firefox/i.test(navigator.userAgent)
+			name: "Social.Art",
+			version: "0.5",
+			lenguage: get_len(WINDOW.navigator.language),
+			macOS: navigator.platform.toUpperCase().indexOf("MAC") !== -1,
+			firefox: /Firefox/i.test(navigator.userAgent)
 		}
 	})(),
 
 	label = (function (len) {
 		var _labels = {};
 		_labels["ita"] = {
-			"closePrevent"				: "Salva una bozza prima di uscire!",
-			"Dimensione"				: "Dimensione",
-			"Matita"					: "Matita",
-			"Pennello"					: "Pennello",
-			"Gomma"						: "Gomma",
-			"Ottimizza"					: "Ottimizza",
-			"Anteprima"					: "Anteprima",
-			"Colori"					: "Colori",
-			"Casuale"					: "Casuale",
-			"SalvaBozza"				: "Salva Bozza",
-			"Ripristina"				: "Ripristina",
-			"FoglioQuadretti"			: "Foglio a Quadretti",
-			"FoglioBianco"				: "Foglio Bianco",
-			"FoglioRighe"				: "Foglio a Righe",
-			"Esporta"					: "Esporta",
-			"Svuota"					: "Svuota",
-			"Chiudi"					: "Chiudi",
-			"Pausa"						: "Pausa",
-			"NienteDaEsportare"			: "Niente da esportare",
-			"areYouSure"				: "Sei sicuro?",
-			"loggedAs"					: "Collegato come ",
-			"salvoDisegno"				: " Salvo disegno...",
-			"nothingToSave"				: "Niente da salvare",
-			"genericError"				: "Errore che 2 palle",
-			"editorSaveError"			: "Oooops :( Ora non &egrave; possibile salvare. Riprova pi&ugrave; tardi",
-			"socketError"				: "Errore di connessione nel Socket",
-			"editorSaveConfirm"			: "Dopo aver salvato non potrai più modificare il disegno. Confermi?"
+			"closePrevent": "Salva una bozza prima di uscire!",
+			"Dimensione": "Dimensione",
+			"Matita": "Matita",
+			"Pennello": "Pennello",
+			"Gomma": "Gomma",
+			"Ottimizza": "Ottimizza",
+			"Anteprima": "Anteprima",
+			"Colori": "Colori",
+			"Casuale": "Casuale",
+			"SalvaBozza": "Salva Bozza",
+			"Ripristina": "Ripristina",
+			"FoglioQuadretti": "Foglio a Quadretti",
+			"FoglioBianco": "Foglio Bianco",
+			"FoglioRighe": "Foglio a Righe",
+			"Esporta": "Esporta",
+			"Svuota": "Svuota",
+			"Chiudi": "Chiudi",
+			"Pausa": "Pausa",
+			"NienteDaEsportare": "Niente da esportare",
+			"areYouSure": "Sei sicuro?",
+			"loggedAs": "Collegato come ",
+			"salvoDisegno": " Salvo disegno...",
+			"nothingToSave": "Niente da salvare",
+			"genericError": "Errore che 2 palle",
+			"editorSaveError": "Oooops :( Ora non &egrave; possibile salvare. Riprova pi&ugrave; tardi",
+			"socketError": "Errore di connessione nel Socket",
+			"editorSaveConfirm": "Dopo aver salvato non potrai più modificare il disegno. Confermi?"
 		};
 		_labels["eng"] = {
 
@@ -112,153 +118,165 @@ var App = (function () {
 	})(Info.lenguage),
 
 	Utils = (function () {
-		var _checkError = (function _checkError() {
-			var _function, errorMsg,
-			setFunc = function (func) {
-				_function = func;
-				return this;
-			},
-			setError = function (error) {
-				errorMsg = error;
-				return this;
-			},
-			exec = function (params) {
-				try {
-					return _function (params);
-				} catch(error) {
-					if (Config.debug) {
-						var msg = errorMsg + "[" + error.code + " - " + error.message + "] {" + JSON.stringify(params) + "}";
-						logError(msg);
-					}
-					return false;
-				}
-			};
-			return {
-				exec 		: exec,
-				setFunc 	: setFunc,
-				setError	: setError
-			}
-		})(),
-		checkError = function (func, error, params) {
-			return _checkError.setFunc(func).setError(error).exec(params);
-		},
-		isEmpty = function (value) {
-			return ((typeof value == "undefined" || value === null || value === "" || value === false || value === [] || value === {} || value === NaN || value === undefined) ? true : false);
-		},
-		areEmpty = function (obj) {
-			var res = false;
-			if (obj instanceof Array) {
-				var i = obj.length;
-				if (i === 0) return true;
-				for (;i--;)
-					if (isEmpty(obj[i])) return true;
-				return false;
-			} else
-				return isEmpty(obj);
-		},
-		getRemoteData = function (url, params) {
-			// chiamata AJAX (magari jquery) con paramsin post che restituisce un oggetto de-jsonato, o false
-		},
-		cancelEvent = function (e) {
-			e.preventDefault();
-		},
-		_iterable = function (els, fn) {
-			if (els.length) {
-				for (var i = els.length; i--; )
-					fn(els[i]);
-			} else
-				fn(els);
-		},
-		_fadeInEl = function (el) {
-			if (el) {
-				el.classList.remove("displayNone");
-				requestAnimationFrame(function () {
-					el.classList.add("fadeIn");
-					el.classList.remove("fadeOut");
-				});
-			}
-		},
-		_fadeOutEl = function (el) {
-			if (el) {
-				el.classList.add("fadeOut");
-				el.classList.remove("fadeIn");
-				setTimeout(function () {
-					el.classList.add("displayNone");
-				}, 400);
-			}
-		},
-		_enableEl = function (el) {
-			if (el) {
-				el.classList.add("enabled");
-				el.classList.remove("disabled");
-			}
-		},
-		_disableEl = function (el) {
-			if (el) {
-				el.classList.add("disabled");
-				el.classList.remove("enabled");
-			}
-		},
-		fadeInElements = function (els) {
-			_iterable(els, _fadeInEl);
-		},
-		fadeOutElements = function (els) {
-			_iterable(els, _fadeOutEl);
-		},
-		enableElements = function (els) {
-			_iterable(els, _enableEl);
-		},
-		disableElements = function (els) {
-			_iterable(els, _disableEl);
-		},
-		logError = function (msg) {
-			console.log(msg);
-			// qui possiamo anche tentare una chiamata ajax per inviarci _msg per le statistiche sugli errori,
-		},
-		setSpinner = function (state, dark) {
-			if (state) {
-				fadeInElements(_spinner);
-				dark && overlay.show();
-			} else {
-				fadeOutElements(_spinner);;
-				dark && overlay.hide();
-			}
-		},
-		overlay = (function () {
-			var _callback = false,
-			show = function (onClick) {
-				if (onClick) {
-					_darkOverlay.classList.add("cursorX");
-					_callback = onClick;
-					_darkOverlay.addEventListener("click", onClick);
-				}
-				fadeInElements(_darkOverlay);
-			},
-			hide = function () {
-				if (_callback) {
-					_darkOverlay.classList.remove("cursorX");
-					_callback = false;
-					_darkOverlay.removeEventListener("click", _callback);
-				}
-				fadeOutElements(_darkOverlay);
-			};
-			return {
-				show: show,
-				hide: hide
-			};
-		})();
+		var _checkError = (function () {
+  			var _function, errorMsg,
+  			setFunc = function (func) {
+  				_function = func;
+  				return this;
+  			},
+  			setError = function (error) {
+  				errorMsg = error;
+  				return this;
+  			},
+  			exec = function (params) {
+  				try {
+  					return _function (params);
+  				} catch(error) {
+  					if (Config.debug) {
+  						var msg = errorMsg + "[" + error.code + " - " + error.message + "] {" + JSON.stringify(params) + "}";
+  						logError(msg);
+  					}
+  					return false;
+  				}
+  			};
+  			return {
+  				exec: exec,
+  				setFunc: setFunc,
+  				setError: setError
+  			}
+  		})(),
+  		checkError = function (func, error, params) {
+  			return _checkError.setFunc(func).setError(error).exec(params);
+  		},
+  		isEmpty = function (value) {
+  			return ((typeof value == "undefined" || value === null || value === "" || value === false || value === [] || value === {} || value === NaN || value === undefined) ? true : false);
+  		},
+  		areEmpty = function (obj) {
+  			var res = false;
+  			if (obj instanceof Array) {
+  				var i = obj.length;
+  				if (i === 0) return true;
+  				for (;i--;)
+  					if (isEmpty(obj[i])) return true;
+  				return false;
+  			} else
+  				return isEmpty(obj);
+  		},
+  		getRemoteData = function (url, params) {
+  			// chiamata AJAX (magari jquery) con paramsin post che restituisce un oggetto de-jsonato, o false
+  		},
+  		cancelEvent = function (e) {
+  			e.preventDefault();
+  		},
+  		_iterable = function (els, fn) {
+  			if (els.length) {
+  				for (var i = els.length; i--; )
+  					fn(els[i]);
+  			} else
+  				fn(els);
+  		},
+      _doFadeIn = function () {
+        this.classList.add("fadeIn");
+        this.classList.remove("fadeOut");
+      },
+  		_fadeInEl = function (el) {
+  			if (el) {
+  				el.classList.remove("displayNone");
+  				requestAnimationFrame(_doFadeIn.bind(el));
+  			}
+  		},
+      _doFadeOut = function () {
+        this.classList.add("displayNone");
+      },
+  		_fadeOutEl = function (el) {
+  			if (el) {
+  				el.classList.add("fadeOut");
+  				el.classList.remove("fadeIn");
+  				setTimeout(_doFadeOut.bind(el), 400);
+  			}
+  		},
+  		_enableEl = function (el) {
+  			if (el) {
+  				el.classList.add("enabled");
+  				el.classList.remove("disabled");
+  			}
+  		},
+  		_disableEl = function (el) {
+  			if (el) {
+  				el.classList.add("disabled");
+  				el.classList.remove("enabled");
+  			}
+  		},
+  		fadeInElements = function (els) {
+  			_iterable(els, _fadeInEl);
+  		},
+  		fadeOutElements = function (els) {
+  			_iterable(els, _fadeOutEl);
+  		},
+  		enableElements = function (els) {
+  			_iterable(els, _enableEl);
+  		},
+  		disableElements = function (els) {
+  			_iterable(els, _disableEl);
+  		},
+  		logError = function (msg) {
+  			console.log(msg);
+  			// qui possiamo anche tentare una chiamata ajax per inviarci _msg per le statistiche sugli errori,
+  		},
+  		setSpinner = function (state, dark) {
+  			if (state) {
+  				fadeInElements(_spinner);
+  				dark && overlay.show();
+  			} else {
+  				fadeOutElements(_spinner);;
+  				dark && overlay.hide();
+  			}
+  		},
+  		overlay = (function () {
+    			var _callback = false,
+    			show = function (onClick) {
+    				if (onClick) {
+    					_darkOverlay.classList.add("cursorX");
+    					_callback = onClick;
+    					_darkOverlay.addEventListener("click", onClick);
+    				}
+    				fadeInElements(_darkOverlay);
+    			},
+    			hide = function () {
+    				if (_callback) {
+    					_darkOverlay.classList.remove("cursorX");
+    					_callback = false;
+    					_darkOverlay.removeEventListener("click", _callback);
+    				}
+    				fadeOutElements(_darkOverlay);
+    			};
+
+  			return {
+  				show: show,
+  				hide: hide
+  			};
+  		})(),
+      init = function () {
+        MATH.radians = function (degrees) {
+          return degrees * PI / 180;
+        };
+        MATH.degrees = function (radians) {
+          return radians / (PI / 180);
+        };
+      };
 		return {
-			CK				: checkError,
-			isEmpty			: isEmpty,
-			areEmpty		: areEmpty,
-			getRemoteData	: getRemoteData,
-			cancelEvent		: cancelEvent,
-			enableElements	: enableElements,
-			disableElements	: disableElements,
+      init: init,
+			CK: checkError,
+			isEmpty: isEmpty,
+			areEmpty: areEmpty,
+			getRemoteData: getRemoteData,
+			cancelEvent: cancelEvent,
+			enableElements: enableElements,
+			disableElements: disableElements,
 			fadeInElements: fadeInElements,
 			fadeOutElements: fadeOutElements,
-			setSpinner		: setSpinner,
-			overlay			: overlay
+			setSpinner: setSpinner,
+			overlay: overlay
 		}
 	})(),
 
@@ -270,13 +288,13 @@ var App = (function () {
 			},
 			init = function () {
 				var url = Config.socketUrl,
-				_onConnect = function () {
-					var data;
-					for (var i = _buffer.length; i--; ) {
-						data = _buffer.pop();
-						_socket.io.emit(data[0], data[1]);
-					}
-				};
+  				_onConnect = function () {
+  					var data;
+  					for (var i = _buffer.length; i--; ) {
+  						data = _buffer.pop();
+  						_socket.io.emit(data[0], data[1]);
+  					}
+  				};
 				_socket = {
 					url: url,
 					io: io(url)
@@ -314,94 +332,93 @@ var App = (function () {
 
 	Worker = (function () {
 		var _list = {},
-		create = function (file) {
+  		create = function (file) {
 
-		},
-		close = function (file) {
+  		},
+  		close = function (file) {
 
-		},
-		one = function (file) {
+  		},
+  		one = function (file) {
 
-		},
-		oneOrNew = function (file) {
-			// queste 2 funzioni che sono uguali in più moduli le possiamo aggiungere col metodo oggetto.method preso dal libro, cosi le scriviamo una volta sola
-		};
+  		},
+  		oneOrNew = function (file) {
+  			// queste 2 funzioni che sono uguali in più moduli le possiamo aggiungere col metodo oggetto.method preso dal libro, cosi le scriviamo una volta sola
+  		};
 		return {
-			create		: function (file) { return Utils.CK(create,	"Error: Worker not created. ",	file) },
-			close		: function (file) { return Utils.CK(close,		"Error: Worker not closed. ",	file) },
-			one			: one,
-			oneOrNew	: oneOrNew
+			create: function (file) { return Utils.CK(create,	"Error: Worker not created. ",	file) },
+			close: function (file) { return Utils.CK(close,		"Error: Worker not closed. ",	file) },
+			one: one,
+			oneOrNew: oneOrNew
 		}
 	})(),
 
 	Dashboard = (function () {
-		var _dom, _imageGroup = {}, _buttonEditor, _zoomLabel, _coordsLabel, _allDom, _canvasForClick = DOCUMENT.createElement("canvas"), _contextForClick = _canvasForClick.getContext("2d"), _imageForDraw =  new Image(),
-		_isDebug = Config.debug, _draggable = true, _isMouseDown = false, _zoomable = true, _isLoading = false, _timeoutForSpinner = false, _idsImagesOnDashboard = [], _idsImagesOnScreen = [], _cacheNeedsUpdate = true,
-		_zoomScaleLevelsDown = [ 1, 0.88, 0.7744, 0.681472, 0.59969536, 0.5277319168, 0.464404086783, 0.408675596397, 0.359634524806, 0.316478381829, 0.278500976009, 0.245080858888, 0.215671155822, 0.189790617123, 0.167015743068, 0.146973853900, 0.129336991432, 0.113816552460, 0.100158566165, 0.088139538225 ],
-		_zoomScaleLevelsUp = [ 1, 1.136363636364, 1.291322314050, 1.467411720511, 1.667513318762, 1.894901498594, 2.153297157493, 2.446928588060, 2.780600668250, 3.159773486648, 3.590651689372, 4.080286010650, 4.636688648466, 5.268964373257, 5.987459515065, 6.803931267119, 7.731740076272, 8.786068268491, 9.984168486921, 11.34564600787 ],
-		_mouseX, _mouseY, _clickX, _clickY, _currentX, _currentY, _zoom = 1, _decimals = 0, socket = Socket, _socketCallsInProgress = 0, _animationZoom = false, _deltaVisibleCoordX = 0, _deltaVisibleCoordY = 0, _minVisibleCoordX = 0, _minVisibleCoordY = 0, _maxVisibleCoordX = 0, _maxVisibleCoordY = 0,
-		_zoomScale = 0.12, _zoom = 1, _zoomMax = 20, _deltaZoomMax = 2, _deltaZoom = 0, _deltaDragMax = 200, _deltaDragX = 0, _deltaDragY = 0, // per ricalcolare le immagini visibili o no durante il drag
+    var _dom, _imageGroup = {}, _buttonShowEditor, _buttonUpdateGps, _zoomLabel, _zoomLabelDoms, _coordsLabel, _allDom, _canvasForClick = DOCUMENT.createElement("canvas"), _contextForClick = _canvasForClick.getContext('2d'), _imageForDraw = new Image(),
+      _isDebug = Config.debug, _draggable = true, _isMouseDown = false, _zoomable = true, _isLoading = false, _timeoutForSpinner = false, _cacheNeedsUpdate = true, _animationZoom = false,
+      _idsImagesOnDashboard = [], _idsImagesOnScreen = [], _currentGpsMapScale = 0,
+      _zoomScaleLevelsDown = [1, 0.88, 0.7744, 0.681472, 0.59969536, 0.5277319168, 0.464404086783, 0.408675596397, 0.359634524806, 0.316478381829, 0.278500976009, 0.245080858888, 0.215671155822, 0.189790617123, 0.167015743068, 0.146973853900, 0.129336991432, 0.113816552460, 0.100158566165, 0.088139538225],
+      _zoomScaleLevelsUp = [1, 1.136363636364, 1.291322314050, 1.467411720511, 1.667513318762, 1.894901498594, 2.153297157493, 2.446928588060, 2.780600668250, 3.159773486648, 3.590651689372, 4.080286010650, 4.636688648466, 5.268964373257, 5.987459515065, 6.803931267119, 7.731740076272, 8.786068268491, 9.984168486921, 11.34564600787],
+      _mouseX, _mouseY, _clickX, _clickY, _currentX = false, _currentY = false, _zoom = 1, _decimals = 0, _socketCallsInProgress = 0, _deltaDragMax = 200, _deltaDragX = 0, _deltaDragY = 0, _deltaDragYgps = 0, _maxDeltaDragYgps = 10 /* km */,
+      _deltaVisibleCoordX = 0, _deltaVisibleCoordY = 0, _minVisibleCoordX = 0, _minVisibleCoordY = 0, _maxVisibleCoordX = 0, _maxVisibleCoordY = 0, _zoomScale = 0.12, _zoom = 1, _zoomMax = 20, _deltaZoomMax = 2, _deltaZoom = 0,
 
 		_cache = (function () {
-			var _list = {},
-				_ids = [],
-				_maxCacheSize = 100,	// forse sarebbe cool parametrizzare questo in base alle prestazioni locali
-			_updateIds = function () {
-				_ids = Object.keys(_list);
-			},
-			add = function (id, data) {
-				// se la cache html5 può fare al caso nostro, salviamo data in cache, e id nella lista cosi sappiamo cosa abbiamo e cosa no
-				// altrimenti mettiamo entrambi nel dizionario _list
-				if (_list[id]) return;
-				_list[id] = data;
-				_updateIds();
-			},
-			get = function (id) {
-				return _list[id] || false;
-			},
-			set = function (id, data) {
-				del(id);
-				add(id, data);
-			},
-			del = function (id) {
-				_list[id] = undefined;
-				delete _list[id];
-				_updateIds();
-			},
-			log = function () {
-				console.log(_list);
-			},
-			ids = function () {
-				return _ids;
-			},
-			length = function () {
-				return _ids.length;
-			},
-			exist = function (id) {
-				return _ids.indexOf(id) >= 0;
-			},
-			clean = function (force) {	// magari anche un metodo che controlli quanto abbiamo in cache e se necessario la liberi
-				if (force || _ids.length > _maxCacheSize) {
+			var _list = {}, _ids = [], _maxCacheSize = 100,	// forse sarebbe cool parametrizzare questo in base alle prestazioni locali
+  			_updateIds = function () {
+  				_ids = Object.keys(_list);
+  			},
+  			add = function (id, data) {
+  				// se la cache html5 può fare al caso nostro, salviamo data in cache, e id nella lista cosi sappiamo cosa abbiamo e cosa no
+  				// altrimenti mettiamo entrambi nel dizionario _list
+  				if (_list[id]) return;
+  				_list[id] = data;
+  				_updateIds();
+  			},
+  			get = function (id) {
+  				return _list[id] || false;
+  			},
+  			set = function (id, data) {
+  				del(id);
+  				add(id, data);
+  			},
+  			del = function (id) {
+  				_list[id] = undefined;
+  				delete _list[id];
+  				_updateIds();
+  			},
+  			log = function () {
+  				console.log(_list);
+  			},
+  			ids = function () {
+  				return _ids;
+  			},
+  			length = function () {
+  				return _ids.length;
+  			},
+  			exist = function (id) {
+  				return _ids.indexOf(id) >= 0;
+  			},
+  			clean = function (force) { // magari anche un metodo che controlli quanto abbiamo in cache e se necessario la liberi
+  				if (force || _ids.length > _maxCacheSize) {
 
-				}
-			},
-			reset = function () {
-				for (var i = _ids.length; i--; ) {
-					var draw  = _list[_ids[i]];
-					draw.onScreen = draw.onDashboard = false;
-				}
-			};
+  				}
+  			},
+  			reset = function () {
+  				for (var i = _ids.length; i--;) {
+  					var draw  = _list[_ids[i]];
+  					draw.onScreen = draw.onDashboard = false;
+  				}
+  			};
 			return {
-				get		: get,
-				set		: set,
-				add		: add,
-				del		: del,
-				log		: log,
-				ids		: ids,
-				length	: length,
-				exist	: exist,
-				clean	: clean,
-				reset	: reset
+				get: get,
+				set: set,
+				add: add,
+				del: del,
+				log: log,
+				ids: ids,
+				length: length,
+				exist: exist,
+				clean: clean,
+				reset: reset
 			};
 		})(),
 		_tooltip = (function () {
@@ -502,38 +519,238 @@ var App = (function () {
 		    hide: hide
 		  };
 		})(),
+    _gps = (function () {
+      var _px4mm = 1, _lastPosition = false, _refreshTime = 5000, _scalePrecision = true,
+        _GEO = navigator.geolocation, _scaleFactor,
+        _WGS84 = {
+          r_major: 6378137000,
+          r_minor: 6356752314.245179,
+          f: 298.257223563,
+        },
+        _geoOptions = {
+          enableHighAccuracy: true,
+          timeout: 25000,
+          maximumAge: 0
+        },
+        _positionIsValid = function () {
+          return (_lastPosition && (new Date().getTime() - _lastPosition.timestamp < _refreshTime));
+        },
+        _scaleFactorExact = function (lat) {
+          var r = MATH.radians(lat);
+          var s = 1 / MATH.cos(r);
+          var c = MATH.sqrt(1 - MATH.pow(0.006694379990141317, 2) * MATH.pow(MATH.sin(r), 2));
+          return s * c;
+        },
+        _scaleFactorRounded = function (lat) {
+          return 1 / MATH.cos(MATH.radians(lat));
+        },
+        _scaleFactor = _scalePrecision ? _scaleFactorExact : _scaleFactorRounded,
+        _lon2mm = function (lon) {
+          return MATH.round((_WGS84.r_major * MATH.radians(lon)) * 10) / 10;
+        },
+        _lat2mm = function (lat) {
+          if (lat > 89.5) lat = 89.5;
+          if (lat < -89.5) lat = -89.5;
+          var phi = MATH.radians(lat);
+          var con = _WGS84.eccent * MATH.sin(phi);
+          con = MATH.pow((1.0 - con) / (1.0 + con), 0.5 * _WGS84.eccent);
+          return MATH.round((-_WGS84.r_major * MATH.log(MATH.tan(0.5 * (PI * 0.5 - phi)) / con)) * 10) / 10;
+        },
+        _mm2lon = function (mmx) {
+          return MATH.degrees((mmx / _WGS84.r_major));
+        },
+        _mm2lat = function (mmy) {
+          var N_ITER = 15;
+          var HALFPI = PI / 2;
+          var TOL = 0.0000000001;
+          var ts = MATH.exp(0 - (mmy / _WGS84.r_major));
+          var e = _WGS84.eccent;
+          var eccnth, Phi, con, dphi;
+          var i = N_ITER;
+          var eccnth = 0.5 * e;
+          Phi = HALFPI - 2 * MATH.atan(ts);
+          do {
+            con = e * MATH.sin(Phi);
+            dphi = HALFPI - 2 * MATH.atan(ts * MATH.pow((1 - con) / (1 + con), eccnth)) - Phi;
+            Phi = Phi + dphi;
+          }
+          while (MATH.abs(dphi) > TOL && --i);
+          return MATH.degrees(Phi);
+        },
+        _gps2px = function (position, lat, lon) {
+          if (position) {
+            var lon = position.coords.longitude;
+            var lat = position.coords.latitude;
+          }
+          return {
+            x: _lon2mm(lon) * _px4mm,
+            y: _lat2mm(lat) * _px4mm
+          };
+        },
+        _px2gps = function (pxx, pxy) {
+          return {
+            lat: _mm2lat(pxy / _px4mm),
+            lon: _mm2lon(pxx / _px4mm)
+          };
+        },
+        _geoCallback = function (callback) {
+          return function (position) {
+            _lastPosition = position;
+            LAT.push(position.coords.latitude)
+            LON.push(position.coords.longitude);
+            console.log("GPS - lat:", position.coords.latitude, "lon:", position.coords.longitude);
+            callback && callback(position);
+          };
+        },
+        _geoError = function (err) {
+          Messages.error(label['errorGeo']);
+        },
+        _getPosition = _GEO ? function (force, callback, error) {
+          if (force || !_positionIsValid()) {
+            _GEO.getCurrentPosition(_geoCallback(callback), error || _geoError, _geoOptions);
+          } else {
+            callback(_lastPosition);
+          }
+        } : function (force, callback, error) {
+          (error || _geoError)();
+        },
+        pxy2scale = function (pxy) {
+          return _scaleFactor(_mm2lat(pxy / _px4mm));
+        },
+        coordGps2px = function (lat, lon) {
+          return _gps2px(false, lat, lon);
+        },
+        // so che potrei usare un livello di callback in meno per avere comunque gps2px, ma cosi posso usare_getPosition anche per altre funzionalità API
+        currentGps2px = function (forceRefresh, callback, error) {
+          if (!callback) return;
+          _getPosition(forceRefresh || false, function (position) {
+            var px = _gps2px(position);
+            callback(px.x, px.y);
+          }, error || emptyFN);
+        },
 
-		_initDomGroup = function () {
-			if (_imageGroup.tag) {
-				_dom.removeChild(_imageGroup.tag);
-				_imageGroup.origin = _imageGroup.tag = null;
-				_imageGroup.pxx = _imageGroup.pxy = 0;
-				_imageGroup.matrix = null;
-			}
-			var g = DOCUMENT.createElementNS("http://www.w3.org/2000/svg", "g");
-			var origin = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-			g.setAttribute("id", "imageGroup");
-			origin.setAttributeNS(null, "x", 0);
-			origin.setAttributeNS(null, "y", 0);
-			origin.setAttributeNS(null, "height", "1");
-			origin.setAttributeNS(null, "width", "1");
-			origin.setAttributeNS(null, "fill", "#FFF");
-			g.appendChild(origin);
-			_dom.appendChild(g);
-			_imageGroup.tag = g;
-			_imageGroup.origin = origin;
-			_imageGroup.matrix = _imageGroup.tag.getCTM();
-			var z = _imageGroup.matrix.a;
-			_deltaVisibleCoordX = DXX / z;
-			_deltaVisibleCoordY = DYY / z;
-		},
+        LAT = [], LON = [], XXX = [], YYY = [],
+
+        init = function () {
+          _WGS84.temp = _WGS84.r_minor / _WGS84.r_major;
+          _WGS84.eccent = MATH.sqrt(1.0 - (_WGS84.temp * _WGS84.temp));
+          _maxDeltaDragYgps = _maxDeltaDragYgps * 1000 * 1000 * _px4mm; // passaggio da metri a mm e poi px
+
+
+          //setTimeout(goToGps, 2000);
+          var logGps = function () {
+            currentGps2px(true, function (x, y) {
+              XXX.push(x);
+              YYY.push(y);
+              console.log("PX  - X:", x, "Y:", y);
+            });
+          };
+          var loops = 15, time = 20000;
+          for (var i = loops; i--; ) {
+            setTimeout(logGps, time * i);
+          }
+          setTimeout(function () {
+            console.log("VALORI MEDI");
+            var lat = LAT.reduce(function (a, b) { return a + b; }) / LAT.length;
+            var lon = LON.reduce(function (a, b) { return a + b; }) / LON.length;
+            var x = XXX.reduce(function (a, b) { return a + b; }) / XXX.length;
+            var y = YYY.reduce(function (a, b) { return a + b; }) / YYY.length;
+            console.log("LAT:", lat);
+            console.log("LON:", lon);
+            console.log("X:", x);
+            console.log("Y:", y);
+
+            console.log("VARIAZIONE MEDIA");
+            for (var i = LAT.length; i--; ) {
+              LAT[i] = LAT[i] - lat;
+            }
+            for (var i = LON.length; i--; ) {
+              LON[i] = LON[i] - lon;
+            }
+            for (var i = XXX.length; i--; ) {
+              XXX[i] = XXX[i] - x;
+            }
+            for (var i = YYY.length; i--; ) {
+              YYY[i] = YYY[i] - y;
+            }
+            console.log("LAT:", LAT.reduce(function (a, b) { return a + b; }) / LAT.length);
+            console.log("LON:", LON.reduce(function (a, b) { return a + b; }) / LON.length);
+            console.log("X:", XXX.reduce(function (a, b) { return a + b; }) / XXX.length);
+            console.log("Y:", YYY.reduce(function (a, b) { return a + b; }) / YYY.length);
+
+            console.log("VARIAZIONE MASSIMA");
+            console.log("LAT:", Math.max.apply(null, LAT.map(Math.abs)));
+            console.log("LON:", Math.max.apply(null, LON.map(Math.abs)));
+            console.log("X:", Math.max.apply(null, XXX.map(Math.abs)));
+            console.log("Y:", Math.max.apply(null, YYY.map(Math.abs)));
+
+          }, time * loops);
+
+
+          if (false && Config.debug) {
+            _getPosition(true, function (position) {
+              var lat = position.coords.latitude;
+              var lon = position.coords.longitude;
+              console.log("posizione gps: ", lat, lon);
+              var latmm = _lat2mm(lat);
+              var lonmm = _lon2mm(lon);
+              console.log("posizione in mm: ", latmm, lonmm);
+              console.log("posizione ricalcolata: ", _mm2lat(latmm), _mm2lon(lonmm));
+            });
+
+            /*
+              var X = _lat2mm(89.5) * 2;
+              var Y = _lon2mm(360);
+              var XY = X * Y * _px4mm * _px4mm; // 4.439579517512023e+22
+
+              var E = 40070368;
+              var R = E / (2 * Math.PI);
+              var A = 4 * Math.PI * R * R;
+              var Am = A * 1000 * 1000;
+              var Ampx = Am * _px4mm * _px4mm;  // 8.177428807369888e+21
+            */
+
+          }
+        };
+      return {
+        init: init,
+        pxy2scale: pxy2scale,
+        currentGps2px: currentGps2px,
+        coordGps2px: coordGps2px
+      };
+    })(),
+
+    _initDomGroup = function () {
+      if (_imageGroup.tag) {
+        _dom.removeChild(_imageGroup.tag);
+        _imageGroup.origin = _imageGroup.tag = null;
+        _imageGroup.pxx = _imageGroup.pxy = 0;
+        _imageGroup.matrix = null;
+      }
+      var g = DOCUMENT.createElementNS("http://www.w3.org/2000/svg", "g");
+      var origin = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
+      g.setAttribute('id', 'imageGroup');
+      origin.setAttributeNS(null, 'x', 0);
+      origin.setAttributeNS(null, 'y', 0);
+      origin.setAttributeNS(null, 'height', '1');
+      origin.setAttributeNS(null, 'width', '1');
+      origin.setAttributeNS(null, 'fill', '#FFF');
+      g.appendChild(origin);
+      _dom.appendChild(g);
+      _imageGroup.tag = g;
+      _imageGroup.origin = origin;
+      _imageGroup.matrix = _imageGroup.tag.getCTM();
+      _updateDeltaVisibleCoords();
+    },
 		_initDom = function () {
 			_dom = _domGet("#dashboard");
 			_zoomLabel = _domGet("#zoomLabel");
 			_initDomGroup();
-			_buttonEditor = _domGet("#showEditor");
+			_buttonShowEditor = _domGet("#showEditor");
+      _buttonUpdateGps = _domGet("#dashboard_update-gps");
 			_allDom = _domGetAll("#showEditor, #zoomLabel, #zoomLabelCont");
-			_buttonEditor.classList.remove("displayNone");
+			_buttonShowEditor.classList.remove("displayNone");
+      _buttonUpdateGps.classList.remove("displayNone");
 			if (_isDebug) {
 				_domGet("#dashboardCoords").classList.remove("displayNone");
 				_coordsLabel = _domGet("#dashboardCoords span");
@@ -542,7 +759,12 @@ var App = (function () {
 		},
 		_updateCoordsLabel = _isDebug ? function (x, y) {
 			_coordsLabel.innerHTML = "(" + x + ", " + y + ")";
-		} : function (){},
+		} : emptyFN,
+    _updateDeltaVisibleCoords = function () {
+      var z = _imageGroup.matrix.a;
+      _deltaVisibleCoordX = DXX / z * _currentGpsMapScale;
+      _deltaVisibleCoordY = DYY / z * _currentGpsMapScale;
+    },
 		_updateCurrentCoords = function (x, y) {
 			_currentX = x;
 			_currentY = y;
@@ -552,6 +774,10 @@ var App = (function () {
 			_maxVisibleCoordY = y + _deltaVisibleCoordY;
 			_updateCoordsLabel(x, y);
 		},
+    _updateGpsMapScaleForY = function (pxy) {
+      _currentGpsMapScale = _gps.pxy2scale(pxy);
+      _deltaDragYgps = 0;
+    },
 		_animZoom = function () {
 			if (_zoom === 1) {
 				Editor.show();
@@ -561,7 +787,7 @@ var App = (function () {
 				requestAnimationFrame(_animZoom);
 			}
 		},
-		_buttonEditorClick = function (e) {
+		_buttonShowEditorClick = function (e) {
 			if (_animationZoom) return;
 			CurrentUser.doLogin().then(function () {
 				_animationZoom = true;
@@ -631,62 +857,71 @@ var App = (function () {
 			isOnDashboard = isOnScreen = decimals = R = undefined;
 			_cacheNeedsUpdate = false;
 		},
-		_zoomTo = function (level, x, y, animated) {	// "OK"
-			if (level === _zoom || level > _zoomMax || level < 1) return;
-			_tooltip.hide();
-			var refreshCache = (level === 1 || animated !== true),
-				deltaZoomLevel = level - _zoom,
-				newp = _dom.createSVGPoint(),
-				//_zz = (deltaZoomLevel > 0) ? MATH.pow(1 - _zoomScale, -deltaZoomLevel) : MATH.pow(1 / (1 - _zoomScale), deltaZoomLevel),
-				//_z = (deltaZoomLevel > 0) ? MATH.pow(1 - _zoomScale, deltaZoomLevel) : MATH.pow(1 / (1 - _zoomScale), -deltaZoomLevel),
-				_scaleLevelIndex = MATH.abs(deltaZoomLevel),
-				_zz = (deltaZoomLevel > 0) ? _zoomScaleLevelsUp[_scaleLevelIndex] : _zoomScaleLevelsDown[_scaleLevelIndex],
-				_z = (deltaZoomLevel > 0) ? _zoomScaleLevelsDown[_scaleLevelIndex] : _zoomScaleLevelsUp[_scaleLevelIndex],
-				_currentScale = 1 / _imageGroup.matrix.a,
-				_currentScaleAndZoom = _currentScale * round(_zz - 1, 12);
-			_zoom = level;
-			_deltaZoom = _deltaZoom + MATH.max(deltaZoomLevel, 0);
-			newp.x = x;
-			newp.y = y;
-			newp = newp.matrixTransform(_imageGroup.tag.getScreenCTM().inverse());
-			newp.x = round(newp.x);
-			newp.y = round(newp.y);
-			_imageGroup.matrix = _imageGroup.matrix.translate(-(newp.x * (_z-1)), -(newp.y * (_z-1)));
-			_imageGroup.matrix.a = _imageGroup.matrix.d = _zoomScaleLevelsDown[_zoom - 1];
-			_imageGroup.updateMatrix();
-			var _newCoordX = round(_currentX + ((XX2 - x) * _currentScaleAndZoom), _decimals),
-				_newCoordY = round(_currentY - ((YY2 - y) * _currentScaleAndZoom), _decimals),
-				z = _imageGroup.matrix.a;
-			_deltaVisibleCoordX = DXX / z;
-			_deltaVisibleCoordY = DYY / z;
-			_updateCurrentCoords(_newCoordX, _newCoordY);
-			_updateGroupOrigin();
-			if (refreshCache && (_deltaZoom > _deltaZoomMax)) {
-				 _fillScreen(); 	// dopo lo zoom e l'aggiornamento delle imm, scarico e visualizzo le nuove. necessario solo se sto rimpicciolendo la schermata.
-			} else {
-				_cacheNeedsUpdate = true;
-			}
-			_zoomLabel.textContent = [round(100 - (95 / _zoomMax) * (level - 1)), "%"].join("");
-		},
-		_drag = function (dx, dy, forceLoad) {	// OK. dx dy sono le differenze in px, non in coordinate (bisogna tenere conto dello zoom)
-			if (dx === 0 && dy === 0) return;
-			var scale = _imageGroup.matrix.a,
-				_deltaX = round(dx / scale, _decimals),
-				_deltaY = round(dy / scale, _decimals);
-			_deltaDragX = _deltaDragX + dx;
-			_deltaDragY = _deltaDragY + dy;
-			_imageGroup.matrix = _imageGroup.matrix.translate(_deltaX, _deltaY);
-			_imageGroup.updateMatrix();
-			var _newCoordX = round(_currentX - _deltaX, _decimals),
-				_newCoordY = round(_currentY + _deltaY, _decimals);
-			_updateCurrentCoords(_newCoordX, _newCoordY);
-			_updateGroupOrigin();
-			if (forceLoad || MATH.abs(_deltaDragX) > _deltaDragMax || MATH.abs(_deltaDragY) > _deltaDragMax) {
-				_fillScreen();
-			} else {
-				_cacheNeedsUpdate = true;
-			}
-		},
+    _zoomTo = function (level, x, y, animated) { // OK si spera
+      // TODO DA TESTARE BENE IN FUTURO PER _currentGpsMapScale
+      if (level === _zoom || level > _zoomMax || level < 1) return;
+      _tooltip.hide();
+      var refreshCache = (level === 1 || animated !== true),
+        deltaZoomLevel = level - _zoom,
+        newp = _dom.createSVGPoint(),
+        //_zz = (deltaZoomLevel > 0) ? MATH.pow(1 - _zoomScale, -deltaZoomLevel) : MATH.pow(1 / (1 - _zoomScale), deltaZoomLevel),
+        //_z = (deltaZoomLevel > 0) ? MATH.pow(1 - _zoomScale, deltaZoomLevel) : MATH.pow(1 / (1 - _zoomScale), -deltaZoomLevel),
+        _scaleLevelIndex = MATH.abs(deltaZoomLevel),
+        _zz = (deltaZoomLevel > 0) ? _zoomScaleLevelsUp[_scaleLevelIndex] : _zoomScaleLevelsDown[_scaleLevelIndex],
+        _z = (deltaZoomLevel > 0) ? _zoomScaleLevelsDown[_scaleLevelIndex] : _zoomScaleLevelsUp[_scaleLevelIndex],
+        _currentScale = 1 / _imageGroup.matrix.a,
+        _currentScaleAndZoom = _currentScale * round(_zz - 1, 12);
+      _zoom = level;
+      _deltaZoom = _deltaZoom + MATH.max(deltaZoomLevel, 0);
+      newp.x = x;
+      newp.y = y;
+      newp = newp.matrixTransform(_imageGroup.tag.getScreenCTM().inverse());
+      newp.x = round(newp.x);
+      newp.y = round(newp.y);
+      _imageGroup.matrix = _imageGroup.matrix.translate(-(newp.x * (_z - 1)), -(newp.y * (_z - 1)));
+      _imageGroup.matrix.a = _imageGroup.matrix.d = _zoomScaleLevelsDown[_zoom - 1];
+      _imageGroup.updateMatrix();
+      var newCoordX = round(_currentX + ((XX2 - x) * _currentScaleAndZoom * _currentGpsMapScale), _decimals),
+          newCoordY = round(_currentY - ((YY2 - y) * _currentScaleAndZoom * _currentGpsMapScale), _decimals);
+      _deltaDragYgps = _deltaDragYgps + (newCoordY - _currentY) * _currentGpsMapScale;
+      if (MATH.abs(_deltaDragYgps) > _maxDeltaDragYgps) {
+        _updateGpsMapScaleForY(newCoordY);
+      }
+      _updateDeltaVisibleCoords();
+      _updateCurrentCoords(newCoordX, newCoordY);
+      _updateGroupOrigin();
+      if (refreshCache && (_deltaZoom > _deltaZoomMax)) {
+        _fillScreen(); // dopo lo zoom e l'aggiornamento delle imm, scarico e visualizzo le nuove. necessario solo se sto rimpicciolendo la schermata.
+      } else {
+        _cacheNeedsUpdate = true;
+      }
+      _zoomLabel.textContent = [round(100 - (95 / _zoomMax) * (level - 1)), "%"].join('');
+    },
+    _drag = function (dx, dy, forceLoad) { // OK. dx dy sono le differenze in px, non in coordinate (bisogna tenere conto dello zoom)
+      // TODO: da testare il drag con refresh dello scale gps
+      if (dx === 0 && dy === 0) return;
+      var zoomScale = _imageGroup.matrix.a,
+        deltaX = round(dx / zoomScale, _decimals),
+        deltaY = round(dy / zoomScale, _decimals),
+        deltaYgps = deltaY * _currentGpsMapScale;
+      _deltaDragX = _deltaDragX + dx;
+      _deltaDragY = _deltaDragY + dy;
+      _deltaDragYgps = _deltaDragYgps + deltaYgps;
+      _imageGroup.matrix = _imageGroup.matrix.translate(deltaX, deltaY);
+      _imageGroup.updateMatrix();
+      var newCoordX = round(_currentX - deltaX * _currentGpsMapScale, _decimals),
+        newCoordY = round(_currentY + deltaYgps, _decimals);
+      _updateCurrentCoords(newCoordX, newCoordY);
+      _updateGroupOrigin();
+      if (forceLoad || MATH.abs(_deltaDragYgps) > _maxDeltaDragYgps) {
+        _updateGpsMapScaleForY(newCoordY);
+      }
+      if (forceLoad || MATH.abs(_deltaDragX) > _deltaDragMax || MATH.abs(_deltaDragY) > _deltaDragMax) {
+        _fillScreen();
+      } else {
+        _cacheNeedsUpdate = true;
+      }
+    },
 		onSocketMessage = function (data) {
 			if (["end", "none", "error"].indexOf(data) >= 0) {
 				_socketCallsInProgress--;
@@ -708,7 +943,6 @@ var App = (function () {
 			}
 		},
 		addDraw = function (draw, replace) {	// OK	aggiunge e salva un disegno passato dall editor o dal socket
-			//console.log(draw);
 			if (!draw || !draw.id) return false;
 			var _drawExist = _cache.exist(draw.id),
 				z = _imageGroup.matrix.a;
@@ -758,7 +992,7 @@ var App = (function () {
 			_cache.add(draw.id, draw);
 		},
 		_getVisibleArea = function () {	// OK - in coordinate assolute
-			// TODO - per adesso cambio qui la dimensione dell'area da scaricare per scaricare tutto in un colpo,
+			// TODO - per adesso cambio qui la dimensione dell'area per scaricare tutto in un colpo,
 			//			ma in futuro sarà meglio fare prima la chiamata per la schermata a video e poi un'altra chiamata per la zona intorno
 			return {
 				minX : _minVisibleCoordX,
@@ -789,7 +1023,7 @@ var App = (function () {
 					}, 100);
 				}
 			}
-			socket.emit("dashboard drag", {
+			Socket.emit("dashboard drag", {
 				"area": area,
 				"ids": notIds
 			});
@@ -805,18 +1039,23 @@ var App = (function () {
 			// 4° avvia trasferimenti di ciò che non è in cache e che deve comparire
 			_callSocketFor(_area, _cache.ids());
 		},
-		goToXY = function (x, y) {	// OK
-			// calcolo la differenza in px invece che coord, e chiamo _drag. se si inseriscono coordinate poco distanti dalle attuali, forzo l'aggiornamento e il caricamento delle nuove
-			if (Utils.areEmpty([x, y])) return;
-			var z = _imageGroup.matrix.a,
-				dx = round((x - _currentX) * z),
-				dy = round((y - _currentY) * z);
-			_updateCurrentCoords(x, y);
-			_idsImagesOnDashboard = [];
-			_cache.reset();
-			_initDomGroup();
-			_fillScreen();
-		},
+    goToGps = function () {
+      _gps.currentGps2px(false, goToXY);
+    },
+    goToXY = function (x, y) { // OK
+      // TODO : aggiungere parametro z per livello di zoom
+      // reset cache, init origine dom, fillScreen
+      if (Utils.areEmpty([x, y])) return;
+      if (_currentGpsMapScale === 0 || _currentY === false || MATH.abs(y - _currentY) > _maxDeltaDragYgps) {
+        _updateGpsMapScaleForY(y);
+      }
+      _updateDeltaVisibleCoords();
+      _updateCurrentCoords(x, y);
+      _cache.reset(); // TODO : solo se mi sono spostato di tanto, anche contanto lo zoom
+      _idsImagesOnDashboard = [];
+      _initDomGroup();
+      _fillScreen();
+    },
 		goToDraw = function (id) {	// TODO
 			// precarica (se necessario) il disegno e poi va alle sue coordinate. in questo modo sono sicuro che sarà visualizzato per primo (importante visto che è stato richiesto specificamente)
 			if (Utils.isEmpty(id)) return;
@@ -912,7 +1151,8 @@ var App = (function () {
 			_dom.addEventListener("mouseover",		_mouseover,	true);
 			DOCUMENT.addEventListener(_mouseWheelEvent, _mouseWheel,true);
 			_isDebug && DOCUMENT.addEventListener("keydown", _keyDown, false);
-			_buttonEditor.addEventListener("mousedown", _buttonEditorClick);
+			_buttonShowEditor.addEventListener("mousedown", _buttonShowEditorClick);
+      _buttonUpdateGps.addEventListener("mousedown", goToGps);
 		},
 		_removeEvents = function () {
 			_dom.removeEventListener("click",			_click,		true);
@@ -923,7 +1163,8 @@ var App = (function () {
 			_dom.removeEventListener("mouseover",		_mouseover,	true);
 			_dom.removeEventListener(_mouseWheelEvent, 	_mouseWheel,true);
 			_isDebug && DOCUMENT.removeEventListener("keydown", _keyDown, false);
-			_buttonEditor.removeEventListener("mousedown", _buttonEditorClick);
+			_buttonShowEditor.removeEventListener("mousedown", _buttonShowEditorClick);
+      _buttonUpdateGps.removeEventListener("mousedown", goToGps);
 		},
 		overshadow = function () {	// mette in secondo piano e blocca la dashboard per mostrare l"editor
 			_draggable = _zoomable = false;
@@ -954,6 +1195,7 @@ var App = (function () {
 			};
 			_initDom();
 			_tooltip.init();
+      _gps.init();
 			_addEvents();
 			goToXY(0, 0);
 		};
@@ -1666,7 +1908,7 @@ var App = (function () {
 		_saveToServer = function (draw) {
 			if (_currentUser.id) {
 				draw.userId = _currentUser.id;
-				socket.emit("editor save", draw);
+				Socket.emit("editor save", draw);
 			} else {
 				Messages.alert(label["genericError"]);
 				Utils.setSpinner(false);
@@ -1872,7 +2114,7 @@ var App = (function () {
 			(!_userInfo.email) && (_userInfo.email = data.email);
 			(!_userInfo.locale) && (_userInfo.locale = data.locale);
 			_userInfo[mode] = data;
-			socket.emit("user login", _userInfo);
+			Socket.emit("user login", _userInfo);
 		},
 		logout = function () {
 			if (Messages.confirm(label["areYouSure"])) {
@@ -2074,6 +2316,7 @@ var App = (function () {
 		DOCUMENT.body.addEventListener("mouseup", 	 preventDefault, true);
 		DOCUMENT.body.addEventListener("mouseout",  preventDefault, true);
 		var requestUrl = DOCUMENT.location.href;
+    Utils.init();
 		Socket.init();
 		if (true) {	// url corrente corrispondente ad home
 			CurrentUser.init();

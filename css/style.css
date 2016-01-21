@@ -656,16 +656,15 @@ body {
 		width: 200px;
 		top: calc(50% - 10px);
 		left: calc(50% - 10px);
-		display: none;
 		z-index: -100;
 	}
 		#dashboardCoords * {
 			float: left;
 		}
 		#dashboardCoords div {
-			width: 5px;
-			height: 5px;
-			margin: 5px;
+			width: 4px;
+			height: 4px;
+			margin: 6px;
 			-webkit-border-radius: 50%;
 			-moz-border-radius: 50%;
 			border-radius: 50%;
