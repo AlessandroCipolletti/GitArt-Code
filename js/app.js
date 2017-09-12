@@ -1683,8 +1683,6 @@ var App = (function () {
 				_context.moveTo(midX, midY);
 				_context.quadraticCurveTo(_oldX, _oldY, _oldMidX, _oldMidY);
 				_context.stroke();
-				_oldX = _mouseX;
-				_oldY = _mouseY;
 				_oldMidX = midX;
 				_oldMidY = midY;
 				_checkCoord(_mouseX, _mouseY);
@@ -1810,7 +1808,7 @@ var App = (function () {
 				Utils.fadeInElements(_pickerToolPreview);
 			}
 		},
-		_undo = function (e) {
+		_undo = function () {
 			var step = _step[_currentStep + 1];
 			if (step) {
 				var _tot = _step.length - _currentStep - 2;
@@ -1835,7 +1833,6 @@ var App = (function () {
 			}
 		},
 		show = function (x,y) {
-			var _tot = _step.length - _currentStep - 1;
 			!_isInit && _init();
 			_dom.classList.add("semiTransparent");
 			Dashboard.overshadow();
